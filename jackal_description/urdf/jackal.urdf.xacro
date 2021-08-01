@@ -275,4 +275,13 @@
 
   <!-- Optional for Clearpath internal softwares -->
   <xacro:include filename="$(optenv CPR_URDF_EXTRAS empty.urdf)" />
+
+  <xacro:include filename="$(find servo_mapping)/urdf/qr1.urdf.xacro"/>
+
+  <joint name="qrGlue" type="fixed">
+    <parent link="rear_mount"/>
+    <child link="qrcode"/>
+    <origin xyz="0 0 0"/>
+  </joint>
+
 </robot>
