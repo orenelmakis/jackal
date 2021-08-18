@@ -274,7 +274,7 @@
   <xacro:include filename="$(find servo_mapping)/urdf/qr1.urdf.xacro"/>
 
   <joint name="qrGlue" type="fixed">
-    <parent link="rear_mount"/>
+    <parent link="front_mount"/>
     <child link="qrcode"/>
     <origin xyz="0 0 0.0" rpy="0.0 0.0 0"/>
   </joint>
