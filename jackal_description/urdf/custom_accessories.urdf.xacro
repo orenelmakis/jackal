@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <!-- This file can be edited to provide non-standard accessories. There
+       must be a file in the config folder that sets the required variable to 1.
+       The accessory can then be enabled by setting the 'config' argument in the
+       launch files. -->
+
+  <!-- Box with AprilTag markers on each face. -->
+  <xacro:if value="$(optenv JACKAL_APRILTAG 0)">
+    <xacro:include filename="accessories/apriltag_box.urdf.xacro" />
+  </xacro:if>
+  
+  <!-- Box with ARTrackAlvar markers on each face. -->
+  <xacro:if value="$(optenv JACKAL_ALVARTAG 0)">
+    <xacro:include filename="accessories/alvartag_box.urdf.xacro" />
+  </xacro:if>
+  
+  <!-- Front and rear cameras. -->
+  <xacro:if value="$(optenv JACKAL_TWOCAMS 0)">
+    <xacro:include filename="accessories/camera_mount.urdf.xacro" />
+    <xacro:include filename="accessories/twocams.urdf.xacro"/>
+  </xacro:if>
+  
+  <!-- Box with AprilTag markers on each face, lifted up slightly. -->
+  <xacro:if value="$(optenv JACKAL_APRILTAG_POLE 0)">
+    <xacro:include filename="accessories/apriltag_box_with_pole.urdf.xacro" />
+  </xacro:if>
+
+  <!-- Custom tool model. -->
+  
+  <!-- Fixed joint (dummy). -->
+  <joint name="custom_tool_base_joint" type="fixed">
+    <parent link="mid_mount" />
+    <child link="custom_tool_base_link" />
+    <!-- make joint horizontal and place in position -->
+    <!-- <origin rpy="0 1.5707 1.5707" xyz="0.22 0 0"/> -->
+    <!-- <origin rpy="0 1.5707 1.5707" xyz="0.18107 0 0.0014"/> -->
+    <origin rpy="0 1.5707 1.5707" xyz="0.4 0 0.0014"/>
+  </joint>
+
+  <link name="custom_tool_base_link">
+    <inertial>
+        <mass value="1" />
+        <inertia
+          ixx="1.0" ixy="0.0" ixz="0.0"
+          iyy="1.0" iyz="0.0"
+          izz="1.0"/>
+    </inertial>
+    <collision>
+      <geometry>
+        <cylinder radius="0.01" length="0.24" />
+      </geometry>
+        </collision>
+    <visual>
+    <!-- <origin xyz="0 0 0" rpy="0 0 0"/> -->
+    <origin xyz="0 0.12 0" rpy="1.5707 0 -0.2"/>
+      <geometry>
+        <cylinder radius="0.01" length="0.24" />
+      </geometry>
+    </visual>
+  </link>
+  
+  <!-- Revolute joint. -->
+  <joint name="custom_tool_joint" type="revolute">
+    <parent link="custom_tool_base_link"/>
+    <child link="custom_tool_link"/>
+    <!-- make joint horizontal -->
+    <!-- <origin rpy="1.5707 0 -1.5707" xyz="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.5708" upper="0" effort="1000" velocity="10"/>
+    <dynamics damping="0.7"/> -->
+    <!-- make joint vertical -->
+    <origin rpy="1.5707 0 -1.5707" xyz="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.7853982" upper="0.7853982" effort="1000" velocity="10"/>
+    <dynamics damping="0.7"/>
+  </joint>
+ 
+  <!-- <link name="custom_tool_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="/home/tom/Documents/Postdoc/3D/Clearpath/210411/custom_tool.stl"/>
+      </geometry>
+      <material name="dark_grey" />
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="/home/tom/Documents/Postdoc/3D/Clearpath/210411/custom_tool.stl"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+  </link> -->
+
+  <link name="custom_tool_link">
+    <visual>
+      <!-- <origin xyz="0.3 0 -0.1" rpy="0 -0.7853982 0"/> -->
+      <!-- <origin xyz="0 0 -0.05" rpy="0 0 0"/> -->
+      <origin xyz="0 0 -0.075" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.005 0.64 0.34"/>
+      </geometry>
+      <material name="dark_grey" />
+    </visual>
+    <collision>
+      <!-- <origin xyz="0.3 0 -0.1" rpy="0 -0.7853982 0"/> -->
+      <!-- <origin xyz="0 0 -0.05" rpy="0 0 0"/> -->
+      <origin xyz="0 0 -0.075" rpy="0 0 0"/>
+      <geometry>
+        <!-- <box size="0.005 0.44 0.34"/> -->
+        <box size="0.005 0.64 0.34"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="1"/>
+      <inertia
+        ixx="1.0" ixy="0.0" ixz="0.0"
+        iyy="1.0" iyz="0.0"
+        izz="1.0"/>
+    </inertial>
+  </link>
+
+  <transmission name="custom_tool_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="custom_tool_joint">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="custom_tool_actuator">
+        <hardwareInterface>EffortJointInterface/VelocityJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!-- <gazebo reference="custom_tool_link">
+    <material>Gazebo/Yellow</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo> -->
+  
+  <!-- Custom tool model. -->
+  
+</robot>
