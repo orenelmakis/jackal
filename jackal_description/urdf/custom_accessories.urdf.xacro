@@ -140,10 +140,15 @@
     </actuator>
   </transmission>
 
-  <!-- <gazebo reference="custom_tool_link">
-    <material>Gazebo/Yellow</material>
+  <gazebo reference="custom_tool_base_link">
+    <material>Gazebo/GreenGlow</material>
     <turnGravityOff>false</turnGravityOff>
-  </gazebo> -->
+  </gazebo>
+
+  <gazebo reference="custom_tool_link">
+    <material>Gazebo/GreenGlow</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
   
   <!-- Custom tool model. -->
   
