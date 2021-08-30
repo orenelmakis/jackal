@@ -22,7 +22,7 @@ imu0_differential: false
 
 odom1: /odometry/drone_localization
 odom1_config: [true, true, false,
-              false, false, false,
+              false, false, true,
               false, false, false,
               false, false, false,
               false, false, false]
