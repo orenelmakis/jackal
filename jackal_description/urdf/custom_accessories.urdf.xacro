@@ -70,8 +70,9 @@
     <limit lower="-1.5708" upper="0" effort="1000" velocity="10"/>
     <dynamics damping="0.7"/> -->
     <!-- make joint vertical -->
-    <origin rpy="1.5707 0 -1.5707" xyz="-0.04 0.0 0.0"/>
-    <axis xyz="0 0 1"/>
+    <origin rpy="1.5707 0 -1.5707" xyz="-0.07 0.0 0.0"/>
+    
+    <axis xyz="0 1 0"/>
     <!-- <limit lower="-0.7853982" upper="0.7853982" effort="1000" velocity="10"/>
     <dynamics damping="0.7"/> -->
   </joint>
@@ -124,7 +125,7 @@
       <mass value="1"/>
       <inertia
         ixx="1.0" ixy="0.0" ixz="0.0"
-        iyy="1.0" iyz="0.0"
+        iyy="3.0" iyz="0.0"
         izz="1.0"/>
     </inertial>
   </link>
@@ -149,6 +150,7 @@
     <material>Gazebo/GreenGlow</material>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
+
   
   <!-- Custom tool model. -->
   
