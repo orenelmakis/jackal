@@ -269,10 +269,9 @@
   <!-- Optional standard accessories, including their simulation data. The rendering
        of these into the final description is controlled by optenv variables, which
        default each one to off.-->
-  <xacro:include filename="$(find jackal_description)/urdf/custom_accessories.urdf.xacro" />
+  <!-- <xacro:include filename="$(find jackal_description)/urdf/custom_accessories.urdf.xacro" /> -->
 
 
-  <xacro:include filename="$(find servo_mapping)/urdf/qr1.urdf.xacro"/>
 
 
     <gazebo reference="front_fender_link">
@@ -288,11 +287,6 @@
     <material>Gazebo/White</material>
   </gazebo>
 
-  <joint name="qrGlue" type="fixed">
-    <parent link="front_mount"/>
-    <child link="qrcode3"/>
-    <origin xyz="0.0 0 0.0" rpy="0.0 0.0 0"/>
-  </joint>
 
 
 
