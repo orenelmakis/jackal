@@ -103,11 +103,12 @@
 
   <link name="custom_tool_link">
     <visual>
-      <!-- <origin xyz="0.3 0 -0.1" rpy="0 -0.7853982 0"/> -->
-      <!-- <origin xyz="0 0 -0.05" rpy="0 0 0"/> -->
       <origin xyz="0 0 -0.075" rpy="0 0 0"/>
-      <geometry>
+      <!-- <geometry>
         <box size="0.005 0.64 0.34"/>
+      </geometry> -->
+        <geometry>
+        <mesh filename="package://smartServoing/models/dozer/dozer.dae" scale="1.0 1.0 1.0"/>
       </geometry>
       <material name="dark_grey" />
     </visual>
@@ -115,9 +116,13 @@
       <!-- <origin xyz="0.3 0 -0.1" rpy="0 -0.7853982 0"/> -->
       <!-- <origin xyz="0 0 -0.05" rpy="0 0 0"/> -->
       <origin xyz="0 0 -0.075" rpy="0 0 0"/>
-      <geometry>
+      <!-- <geometry> -->
         <!-- <box size="0.005 0.44 0.34"/> -->
-        <box size="0.005 0.64 0.34"/>
+        <!-- <box size="0.005 0.64 0.34"/> -->
+        <!-- <box size="0.005 1.0 0.34"/> -->
+      <!-- </geometry> -->
+      <geometry>
+        <mesh filename="package://smartServoing/models/dozer/dozer.dae" scale="1.0 1.0 1.0"/>
       </geometry>
     </collision>
     <inertial>
@@ -141,7 +146,7 @@
     </actuator>
   </transmission> -->
 
-  <gazebo reference="custom_tool_base_link">
+  <!-- <gazebo reference="custom_tool_base_link">
     <material>Gazebo/GreenGlow</material>
     <turnGravityOff>false</turnGravityOff>
   </gazebo>
@@ -149,7 +154,7 @@
   <gazebo reference="custom_tool_link">
     <material>Gazebo/GreenGlow</material>
     <turnGravityOff>false</turnGravityOff>
-  </gazebo>
+  </gazebo> -->
 
   
   <!-- Custom tool model. -->

@@ -41,7 +41,7 @@
       </collision>
       <inertial>
         <origin xyz="0 0 0" rpy="0 0 0"/>
-        <mass value="0.477"/>
+        <mass value="2.0"/>
         <inertia
           ixx="0.0013" ixy="0" ixz="0"
           iyy="0.0024" iyz="0"
@@ -52,8 +52,8 @@
     <gazebo reference="${prefix}_wheel_link">
       <material>Gazebo/DarkGrey</material>
       <selfCollide>false</selfCollide>
-      <mu1 value="0.5"/>
-      <mu2 value="0.5"/>
+      <mu1 value="0.7"/>
+      <mu2 value="0.7"/>
       <kp value="10000000.0" />
       <kd value="1" />
       <fdir1 value="1 0 0"/>
@@ -79,18 +79,7 @@
     </transmission>
   </xacro:macro>
 
-  <xacro:wheel prefix="front_left">
-    <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-  </xacro:wheel>
-  <xacro:wheel prefix="front_right">
-    <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-  </xacro:wheel>
-  <xacro:wheel prefix="rear_left">
-    <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-  </xacro:wheel>
-  <xacro:wheel prefix="rear_right">
-    <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
-  </xacro:wheel>
+
 
   <link name="base_link"></link>
 
@@ -118,14 +107,17 @@
       <!-- Center of mass -->
       <origin xyz="0.012  0.002 0.067" rpy="0 0 0"/>
       <!-- <mass value="16.523"/> -->
-      <mass value="30.000"/>
+      <mass value="50"/>
       <!-- Moments of inertia: ( chassis without wheels ) -->
       <inertia
-        ixx="0.3136" ixy="-0.0008" ixz="0.0164"
-        iyy="0.3922" iyz="-0.0009"
+        ixx="0.3136" ixy="-0.1" ixz="0.1"
+        iyy="0.3922" iyz="-0.1"
         izz="0.4485"/>
       </inertial>
   </link>
+
+
+
 
   <xacro:unless value="$(optenv JACKAL_FRONT_ACCESSORY_FENDER 0)">
     <link name="front_fender_link">
@@ -262,6 +254,20 @@
     <child link="front_mount" />
     <origin xyz="${mount_spacing} 0 0" />
   </joint>
+
+
+  <xacro:wheel prefix="front_left">
+    <origin xyz="${wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="front_right">
+    <origin xyz="${wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="rear_left">
+    <origin xyz="${-wheelbase/2} ${track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+  </xacro:wheel>
+  <xacro:wheel prefix="rear_right">
+    <origin xyz="${-wheelbase/2} ${-track/2} ${wheel_vertical_offset}" rpy="0 0 0" />
+  </xacro:wheel>
 
   <!-- Bring in simulation data for Gazebo. -->
   <xacro:include filename="$(find jackal_description)/urdf/jackal.gazebo" />

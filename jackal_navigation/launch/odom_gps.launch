@@ -1,7 +1,7 @@
 
 <launch>
   <arg name="ns"    default="jackal0"/>
-  <arg name="x"     default="-0.0"/>
+  <arg name="x"     default="0.0"/>
   <arg name="y"     default="0.0"/>
   <arg name="z"     default="0.0"/>
   <arg name="roll"  default="0"/>
@@ -11,6 +11,7 @@
 
   <node pkg="robot_localization" type="ekf_localization_node" name="local_ekf_localization" ns="$(arg ns)">
     <rosparam command="load" file="$(find jackal_control)/config/robot_localization.yaml"/>
+    <param name="publish_tf"      value="true"/>
     <rosparam param="initial_state" subst_value="true">
       [   $(arg x),     $(arg y),   $(arg z),
        $(arg roll), $(arg pitch), $(arg yaw),
@@ -21,12 +22,13 @@
     <param name="map_frame"       value="world"/>
     <param name="odom_frame"      value="$(arg ns)/odom"/>
     <param name="base_link_frame" value="$(arg ns)/base_link"/>
-    <param name="world_frame"     value="$(arg ns)/odom"/>
+      <param name="world_frame"     value="$(arg ns)/odom"/>
     <param name="two_d_mode"      value="true" />
-    <remap from="$(arg ns)/odometry/filtered" to="$(arg ns)/odometry/local_filtered"/>
+    <remap from="odometry/filtered" to="odometry/local_filtered"/>
+    
   </node>
 
-    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_wheel" ns="$(arg ns)">
+    <!-- <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization_wheel" ns="$(arg ns)">
     <rosparam command="load" file="$(find jackal_control)/config/robot_localization_wheel.yaml"/>
     <param name="publish_tf"      value="false"/>
     <rosparam param="initial_state" subst_value="true">
@@ -39,11 +41,10 @@
     <param name="map_frame"       value="world"/>
     <param name="odom_frame"      value="$(arg ns)/odom"/>
     <param name="base_link_frame" value="$(arg ns)/base_link"/>
-    <param name="world_frame"     value="$(arg ns)/odom"/>
     <param name="print_diagnostics" value="true" />
     <param name="two_d_mode"      value="true" />
     <remap from="odometry/filtered" to="odometry/wheel"/>
-  </node>
+  </node> -->
 
     <!-- <node ns="$(arg ns)" pkg="robot_localization" type="navsat_transform_node" name="navsat_transform_node" output="screen">
       <param name="delay"                        value="5.0"/>
@@ -76,25 +77,32 @@
     </node> -->
 
 
-    <node pkg="tf" type="static_transform_publisher" name="static_world_odom_tf" ns="$(arg ns)"
+    <node pkg="tf" type="static_transform_publisher" name="static_map_odom_tf" ns="$(arg ns)"
     args="$0 0 0 0 0 0 world $(arg ns)/odom 100"/>
+
+        <!-- <node pkg="tf" type="static_transform_publisher" name="static_world_map_tf" ns="$(arg ns)"
+    args="$0 0 0 0 0 0 map world 100"/> -->
+    
+    
 
   
   <!-- Move base. Takes desired location commands and sends velocity commands to get it there. -->
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" ns="$(arg ns)" output="screen">
-      <rosparam file="$(find jackal_navigation)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
-      <rosparam file="$(find jackal_navigation)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
-      <rosparam file="$(find jackal_navigation)/params/odom_nav_params/global_costmap_params.yaml" command="load" />
-      <rosparam file="$(find jackal_navigation)/params/odom_nav_params/local_costmap_params.yaml"  command="load" />
-      <rosparam file="$(find jackal_navigation)/params/base_local_planner_params.yaml" command="load" />
-      <rosparam file="$(find jackal_navigation)/params/move_base_params.yaml" command="load" />
-      <param name="base_global_planner" type="string" value="global_planner/GlobalPlanner" /> <!--value="navfn/NavfnROS" /> -->
+  <rosparam file="$(find jackal_navigation)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  <rosparam file="$(find jackal_navigation)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+
+  <rosparam file="$(find jackal_navigation)/params/odom_nav_params/global_costmap_params.yaml" command="load" />
+  <rosparam file="$(find jackal_navigation)/params/odom_nav_params/local_costmap_params.yaml" command="load" />
+
+  <rosparam file="$(find jackal_navigation)/params/base_local_planner_params.yaml" command="load" />
+  <rosparam file="$(find jackal_navigation)/params/move_base_params.yaml" command="load" />
+      <param name="base_global_planner" type="string" value="global_planner/GlobalPlanner" /> 
       <param name="base_local_planner"                value="base_local_planner/TrajectoryPlannerROS"/>
       <param name="global_costmap/global_frame"       value="$(arg ns)/odom"/>
       <param name="global_costmap/robot_base_frame"   value="$(arg ns)/base_link"/>
       <param name="local_costmap/global_frame"        value="$(arg ns)/odom"/>
       <param name="local_costmap/robot_base_frame"    value="$(arg ns)/base_link"/>
-      <remap from="odom"    to="odometry/filtered" />
+      <remap from="odom"    to="odometry/local_filtered" />
       <remap from="cmd_vel" to="jackal_velocity_controller/cmd_vel"/>
     </node>
 
